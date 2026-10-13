@@ -1,0 +1,51 @@
+class Persona:
+    def __init__(self, nombre, identificacion):
+        self._nombre = nombre
+        self._identificacion = identificacion
+
+    @property
+    def nombre(self):
+        return self._nombre
+
+    def mostrar_datos(self):
+        print(f"Nombre: {self._nombre}")
+        print(f"Identificacion: {self._identificacion}")
+
+
+class Profesor(Persona):
+    def __init__(self, nombre, identificacion, especialidad):
+        super().__init__(nombre, identificacion)
+        self.__especialidad = especialidad
+
+    def mostrar_datos(self):
+        super().mostrar_datos()
+        print(f"Especialidad: {self.__especialidad}")
+
+
+class Estudiante(Persona):
+    def __init__(self, nombre, identificacion, carrera):
+        super().__init__(nombre, identificacion)
+        self.__carrera = carrera
+
+    def mostrar_datos(self):
+        super().mostrar_datos()
+        print(f"Carrera: {self.__carrera}")
+
+
+class Materia:
+    def __init__(self, nombre, aula, profesor):
+        self.__nombre = nombre
+        self.__aula = aula
+        self.__profesor = profesor
+
+    @property
+    def nombre(self):
+        return self.__nombre
+
+    @property
+    def aula(self):
+        return self.__aula
+
+    @property
+    def profesor(self):
+        return self.__profesor
