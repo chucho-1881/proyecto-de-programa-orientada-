@@ -1,0 +1,37 @@
+# CLASE HORARIO
+class Horario:
+    def __init__(self, dia, hora_inicio, hora_fin, materia):
+        self.__dia = dia
+        self.__hora_inicio = hora_inicio
+        self.__hora_fin = hora_fin
+        self.__materia = materia
+
+    @property
+    def dia(self):
+        return self.__dia
+
+    @property
+    def hora_inicio(self):
+        return self.__hora_inicio
+
+    @property
+    def hora_fin(self):
+        return self.__hora_fin
+
+    @property
+    def materia(self):
+        return self.__materia
+
+    def mostrar_horario(self):
+        print("\n--- HORARIO DE CLASE ---")
+        print(f"Dia: {self.__dia}")
+        print(
+            f"Hora: {self.__hora_inicio} - "
+            f"{self.__hora_fin}"
+        )
+        print(f"Materia: {self.__materia.nombre}")
+        print(f"Aula: {self.__materia.aula}")
+        print(
+            f"Profesor: "
+            f"{self.__materia.profesor.nombre}"
+        )
