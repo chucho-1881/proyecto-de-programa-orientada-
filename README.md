@@ -1,79 +1,56 @@
+from abc import ABC, abstractmethod
 
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Horarios ULEAM</title>
-</head>
-<body>
 
-    <!-- Encabezado -->
-    <header>
-        <h1>ULEAM</h1>
-        <h2>Sistema de Gestión de Horarios</h2>
-    </header>
+class pasareladepago(ABC):
 
-    <!-- Menú de navegación -->
-    <nav>
-        <a href="#inicio">Inicio</a>
-        <a href="#horarios">Horarios</a>
-        <a href="#materias">Materias</a>
-        <a href="#docentes">Docentes</a>
-        <a href="#aulas">Aulas</a>
-    </nav>
+    @abstractmethod
+    def cobrar(self, monto: float) -> bool:
+        """Procesa el cobro y devuelve True si tiene éxito."""
+        pass
 
-    <!-- Contenido principal -->
-    <main>
 
-        <section id="inicio">
-            <h2>Gestión de horarios académicos</h2>
-            <p>
-                Sistema para organizar y consultar
-                los horarios de clases de la ULEAM.
-            </p>
-        </section>
+class pasarelapaypal(pasareladepago):
 
-        <!-- Tabla de horarios -->
-        <section id="horarios">
-            <h2>Horarios de clases</h2>
+    def cobrar(self, monto: float) -> bool:
+        print("[PayPal] Conectando con la API de PayPal...")
+        print(f"[PayPal] Cobrando el servicio con el monto de ${monto:.2f}...")
+        return True
 
-            <table>
-                <thead>
-                    <tr>
-                        <th>Materia</th>
-                        <th>Docente</th>
-                        <th>Día</th>
-                        <th>Hora</th>
-                        <th>Aula</th>
-                    </tr>
-                </thead>
 
-                <tbody>
-                    <!-- Aquí se agregarán los horarios -->
-                </tbody>
-            </table>
-        </section>
+class pasarelastripe(pasareladepago):
 
-        <section id="materias">
-            <h2>Materias</h2>
-        </section>
+    def cobrar(self, monto: float) -> bool:
+        print("[Stripe] Conectando con la API de Stripe...")
+        print(f"[Stripe] Cobrando el servicio con el monto de ${monto:.2f}...")
+        return True
 
-        <section id="docentes">
-            <h2>Docentes</h2>
-        </section>
 
-        <section id="aulas">
-            <h2>Aulas</h2>
-        </section>
+class serviciodecaja:
 
-    </main>
+    def __init__(self, pasarela: pasareladepago) -> None:
+        self.pasarela = pasarela
 
-    <!-- Pie de página -->
-    <footer>
-        <p>Universidad Laica Eloy Alfaro de Manabí</p>
-        <p>Sistema de Gestión de Horarios</p>
-    </footer>
+    def procesar_compra(self, monto: float) -> None:
+        print("Servicio de caja: validando orden de compra...")
+        exito = self.pasarela.cobrar(monto)
 
-</body>
-</html>
+        if exito:
+            print("Servicio de caja: transaccion correcta")
+        else:
+            print("Servicio de caja: la transaccion ha fallado.")
+
+
+if __name__ == "__main__":
+
+    print("--- Procesando el pago con PayPal ---")
+    pasarela_paypal = pasarelapaypal()
+    caja_con_paypal = serviciodecaja(pasarela_paypal)
+    caja_con_paypal.procesar_compra(100.00)
+
+    print()
+
+    print("--- Procesando el pago con Stripe ---")
+    pasarela_stripe = pasarelastripe()
+    caja_con_stripe = serviciodecaja(pasarela_stripe)
+    caja_con_stripe.procesar_compra(200.00)
+    
